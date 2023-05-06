@@ -24,11 +24,11 @@ df['creditscore'].fillna(value=median_creditscore, inplace=True)
 
 
 df_creditscore = df[['geography', 'gender', 'exited', 'creditscore']].groupby(['geography','gender']).agg({'creditscore':'mean', 'exited':'sum'})
-df_creditscore.rename(columns={'exited':'total # exited', 'creditscore':'avg of credit score'}, inplace=True)
+df_creditscore.rename(columns={'exited':'total_exited', 'creditscore':'avg_credit_score'}, inplace=True)
 df_creditscore.reset_index(inplace=True)
 
 
-df_creditscore.sort_values('avg of credit score', inplace=True)
+df_creditscore.sort_values('avg_credit_score', inplace=True)
 
 df_exited_age_correlation = sqldf(query_df_exited_age_correlation)
 
@@ -43,12 +43,15 @@ df['is_greater'] = df['estimatedsalary'].apply(lambda x: 1 if x>min_salary else 
 df_exited_salary_correlation = sqldf(query_df_exited_salary_correlation)
 
 df_exited_salary_correlation['correlation'].value_counts()
+print(df_creditscore)
+print(df_exited_age_correlation)
+print(df_exited_salary_correlation)
 
-df_creditscore_path = Path(r"/Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/df_creditscore.csv")
-df_exited_age_correlation_path = Path(r"/Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/df_exited_age_correlation.csv")
-df_exited_salary_correlation_path = Path(r"/Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/df_exited_salary_correlation.csv")
+# df_creditscore_path = Path(r"/Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/df_creditscore.csv")
+# df_exited_age_correlation_path = Path(r"/Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/df_exited_age_correlation.csv")
+# df_exited_salary_correlation_path = Path(r"/Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/df_exited_salary_correlation.csv")
 
-if (not df_creditscore_path.is_file()) and (not df_exited_age_correlation_path.is_file()) and (not df_exited_salary_correlation_path.is_file()):
-    df_creditscore.to_csv('df_creditscore.csv',header=True)
-    df_exited_age_correlation.to_csv('df_exited_age_correlation.csv',header=True)
-    df_exited_salary_correlation.to_csv('df_exited_salary_correlation.csv',header=True)
+# if (not df_creditscore_path.is_file()) and (not df_exited_age_correlation_path.is_file()) and (not df_exited_salary_correlation_path.is_file()):
+#     df_creditscore.to_csv('df_creditscore.csv',header=True)
+#     df_exited_age_correlation.to_csv('df_exited_age_correlation.csv',header=True)
+#     df_exited_salary_correlation.to_csv('df_exited_salary_correlation.csv',header=True)
