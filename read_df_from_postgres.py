@@ -35,7 +35,6 @@ col_names = [desc[0] for desc in cur.description]
 
 # Convert the list of tuples into a Pandas DataFrame
 df = pd.DataFrame(rows, columns=col_names)
-print(df.head())
 
 cur.close()
 conn.close()
