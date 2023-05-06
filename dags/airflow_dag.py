@@ -17,8 +17,7 @@ default_args = {
 with DAG('csv_extract_airflow_docker', default_args=default_args, schedule_interval='@daily', catchup=False) as dag:
 
     download_data = BashOperator(task_id='download_data',
-                                 bash_command='''wget -O /Users/dogukanulu/codebase/csv_extract_airflow_docker/churn_modelling.csv.zip 
-                                 https://raw.githubusercontent.com/dogukannulu/datasets/master/Churn_Modelling.csv''',
-                                 retries=1, retry_delay=timedelta(seconds=15))
+                                 bash_command='wget -NO /Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/churn_modelling.csv https://raw.githubusercontent.com/dogukannulu/datasets/master/Churn_Modelling.csv',
+                                 retries=1, execution_timeout=timedelta(minutes=10))
 
     download_data
