@@ -2,6 +2,7 @@ import psycopg2
 import os
 import logging
 import pandas as pd
+import csv
 
 postgres_host = os.environ.get('postgres_host')
 postgres_database = os.environ.get('postgres_database')
@@ -29,13 +30,34 @@ cur = conn.cursor()
 cur.execute("""CREATE TABLE IF NOT EXISTS churn_modelling_creditscore (Geography VARCHAR(50), Gender VARCHAR(20), avg of credit score FLOAT, total # exited INTEGER)""")
 
 # Load the CSV data into the table
-with open('churn_modelling.csv', 'r') as csvfile:
+with open('df_creditscore.csv', 'r') as csvfile:
     csvreader = csv.reader(csvfile)
     next(csvreader) # skip header row
     for row in csvreader:
-        cur.execute("""INSERT INTO churn_modelling (RowNumber, CustomerId, Surname, CreditScore, Geography, Gender, Age, 
-        Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary, Exited) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s)""", 
-        (int(row[0]), int(row[1]), str(row[2]), int(row[3]), str(row[4]), str(row[5]), int(row[6]), int(row[7]), float(row[8]), int(row[9]), int(row[10]), int(row[11]), float(row[12]), int(row[13])))
+        cur.execute("""INSERT INTO churn_modelling_creditscore (Geography, Gender, avg of credit score, total # exited) VALUES (%s, %s, %s, %s)""", 
+        (row[0], row[1], float(row[2]), int(row[3])))
+
+# Create the table if it doesn't exist
+cur.execute("""CREATE TABLE IF NOT EXISTS churn_modelling_exited_age_correlation (Geography VARCHAR(50), Gender VARCHAR(20), exited INTEGER, avg_age FLOAT, avg_salary FLOAT,number_of_exited_or_not INTEGER)""")
+
+# Load the CSV data into the table
+with open('df_exited_age_correlation.csv', 'r') as csvfile:
+    csvreader = csv.reader(csvfile)
+    next(csvreader) # skip header row
+    for row in csvreader:
+        cur.execute("""INSERT INTO churn_modelling_exited_age_correlation (Geography, Gender, exited, avg_age, avg_salary) VALUES (%s, %s, %s, %s, %s)""", 
+        (row[0], row[1], float(row[2]), float(row[3]), int(row[4])))
+
+# Create the table if it doesn't exist
+cur.execute("""CREATE TABLE IF NOT EXISTS churn_modelling_exited_salary_correlation  (exited INTEGER, is_greater INTEGER, correlation INTEGER)""")
+
+# Load the CSV data into the table
+with open('df_exited_salary_correlation.csv', 'r') as csvfile:
+    csvreader = csv.reader(csvfile)
+    next(csvreader) # skip header row
+    for row in csvreader:
+        cur.execute("""INSERT INTO churn_modelling_creditscore (exited, is_greater, correlation) VALUES (%s, %s, %s, %s)""", 
+        (int(row[0]), int(row[1]), int(row[2])))
 
 # Commit the changes and close the cursor and connection
 conn.commit()

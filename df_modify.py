@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import time
 from pandasql import sqldf
+from pathlib import Path
 from sql_queries import query_df_exited_age_correlation, query_df_exited_salary_correlation
 
 
@@ -43,7 +44,11 @@ df_exited_salary_correlation = sqldf(query_df_exited_salary_correlation)
 
 df_exited_salary_correlation['correlation'].value_counts()
 
+df_creditscore_path = Path(r"/Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/df_creditscore.csv")
+df_exited_age_correlation_path = Path(r"/Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/df_exited_age_correlation.csv")
+df_exited_salary_correlation_path = Path(r"/Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/df_exited_salary_correlation.csv")
 
-df_creditscore.to_csv('df_creditscore.csv',header=True)
-df_exited_age_correlation.to_csv('df_exited_age_correlation.csv',header=True)
-df_exited_salary_correlation.to_csv('df_exited_salary_correlation.csv',header=True)
+if (not df_creditscore_path.is_file()) and (not df_exited_age_correlation_path.is_file()) and (not df_exited_salary_correlation_path.is_file()):
+    df_creditscore.to_csv('df_creditscore.csv',header=True)
+    df_exited_age_correlation.to_csv('df_exited_age_correlation.csv',header=True)
+    df_exited_salary_correlation.to_csv('df_exited_salary_correlation.csv',header=True)
