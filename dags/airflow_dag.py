@@ -1,9 +1,14 @@
 from airflow import DAG
+import sys
 from datetime import datetime, timedelta
 
-from airflow.operators.dummy import DummyOperator
+sys.path.append('../')
+
+import write_csv_to_postgres,read_df_from_postgres,write_df_to_postgres,df_modify
+
+
 from airflow.operators.bash import BashOperator
-from airflow.operators.python import BranchPythonOperator
+from airflow.operators.python import PythonOperator
 
 start_date = datetime(2023, 1, 1, 12, 10)
 
@@ -20,4 +25,12 @@ with DAG('csv_extract_airflow_docker', default_args=default_args, schedule_inter
                                  bash_command='curl -O /Users/dogukanulu/Desktop/codebase/csv_extract_airflow_docker/churn_modelling.csv https://raw.githubusercontent.com/dogukannulu/datasets/master/Churn_Modelling.csv',
                                  retries=1, execution_timeout=timedelta(minutes=10))
 
-    download_data
+    write_csv_to_postgres_task = PythonOperator(task_id='write_csv_to_postgres', python_callable=write_csv_to_postgres)
+
+    read_df_from_postgres_task = PythonOperator(task_id='read_df_from_postgres', python_callable=read_df_from_postgres)
+
+    df_modify_task = PythonOperator(task_id='df_modify', python_callable=df_modify)
+
+    write_df_to_postgres_task = PythonOperator(task_id='write_df_to_postgres', python_callable=write_df_to_postgres)
+
+    download_data >> write_csv_to_postgres_task >> read_df_from_postgres_task >> df_modify_task >> write_df_to_postgres_task
