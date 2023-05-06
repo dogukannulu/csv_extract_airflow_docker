@@ -42,3 +42,8 @@ df['is_greater'] = df['estimatedsalary'].apply(lambda x: 1 if x>min_salary else 
 df_exited_salary_correlation = sqldf(query_df_exited_salary_correlation)
 
 df_exited_salary_correlation['correlation'].value_counts()
+
+
+df_creditscore.to_csv('df_creditscore.csv',header=True)
+df_exited_age_correlation.to_csv('df_exited_age_correlation.csv',header=True)
+df_exited_salary_correlation.to_csv('df_exited_salary_correlation.csv',header=True)
