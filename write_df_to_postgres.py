@@ -48,7 +48,7 @@ def insert_creditscore_table(df_creditscore):
         cur.execute(query,values)
         row_count += 1
     
-    logging.info(f"{row_count} rows inserted into table {df_creditscore}")
+    logging.info(f"{row_count} rows inserted into table churn_modelling_creditscore")
 
 
 def insert_exited_age_correlation_table(df_exited_age_correlation):
@@ -59,7 +59,7 @@ def insert_exited_age_correlation_table(df_exited_age_correlation):
         cur.execute(query,values)
         row_count += 1
     
-    logging.info(f"{row_count} rows inserted into table {df_exited_age_correlation}")
+    logging.info(f"{row_count} rows inserted into table churn_modelling_exited_age_correlation")
 
 
 def insert_exited_salary_correlation_table(df_exited_salary_correlation):
@@ -70,7 +70,8 @@ def insert_exited_salary_correlation_table(df_exited_salary_correlation):
         cur.execute(query,values)
         row_count += 1
 
-    logging.info(f"{row_count} rows inserted into table {df_exited_salary_correlation}")
+    logging.info(f"{row_count} rows inserted into table churn_modelling_exited_salary_correlation")
+
 
 if __name__ == '__main__':
     main_df = create_base_df(cur)

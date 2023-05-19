@@ -44,9 +44,6 @@ def create_base_df(cur):
     col_names = [desc[0] for desc in cur.description]
     df = pd.DataFrame(rows, columns=col_names)
 
-    cur.close()
-    conn.close()
-
     df.drop('rownumber', axis=1, inplace=True)
     index_to_be_null = np.random.randint(10000, size=30)
     df.loc[index_to_be_null, ['balance','creditscore','geography']] = np.nan
