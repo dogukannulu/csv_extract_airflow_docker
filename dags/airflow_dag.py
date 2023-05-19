@@ -1,15 +1,12 @@
-from airflow import DAG
 import sys
+from airflow import DAG
 from datetime import datetime, timedelta
+from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
+import create_df_and_modify, write_csv_to_postgres, write_df_to_postgres
 
 sys.path.append('../')
 
-#import write_csv_to_postgres,read_df_from_postgres,write_df_to_postgres,df_modify
-import read_df_from_postgres
-
-
-from airflow.operators.bash import BashOperator
-from airflow.operators.python import PythonOperator
 
 start_date = datetime(2023, 1, 1, 12, 10)
 
