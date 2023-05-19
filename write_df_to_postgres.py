@@ -73,7 +73,7 @@ def insert_exited_salary_correlation_table(df_exited_salary_correlation):
     logging.info(f"{row_count} rows inserted into table churn_modelling_exited_salary_correlation")
 
 
-def write_df_to_postgres_main():
+if __name__ == '__main__':
     main_df = create_base_df(cur)
     df_creditscore = create_creditscore_df(main_df)
     df_exited_age_correlation = create_exited_age_correlation(main_df)

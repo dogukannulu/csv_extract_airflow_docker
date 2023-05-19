@@ -72,7 +72,7 @@ def write_to_postgres():
     """
     Create the dataframe and write to Postgres table if it doesn't already exist
     """
-    df = pd.read_csv('churn_modelling.csv')
+    df = pd.read_csv(f'{dest_folder}/churn_modelling.csv')
     inserted_row_count = 0
 
     for _, row in df.iterrows():
@@ -88,7 +88,7 @@ def write_to_postgres():
 
     logging.info(f' {inserted_row_count} rows from csv file inserted into churn_modelling table successfully')
 
-def write_csv_to_postgres_main():
+if __name__ == '__main__':
     download_file_from_url(url, dest_folder)
     create_postgres_table()
     write_to_postgres()
