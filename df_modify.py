@@ -1,7 +1,6 @@
 from read_df_from_postgres import df
 import pandas as pd
 import numpy as np
-import time
 from pandasql import sqldf
 from pathlib import Path
 from sql_queries import query_df_exited_age_correlation, query_df_exited_salary_correlation
