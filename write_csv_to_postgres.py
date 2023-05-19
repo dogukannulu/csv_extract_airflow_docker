@@ -88,7 +88,7 @@ def write_to_postgres():
 
     logging.info(f' {inserted_row_count} rows from csv file inserted into churn_modelling table successfully')
 
-if __name__ == '__main__':
+def write_csv_to_postgres_main():
     download_file_from_url(url, dest_folder)
     create_postgres_table()
     write_to_postgres()
