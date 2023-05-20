@@ -7,7 +7,6 @@ import psycopg2
 import traceback
 import numpy as np
 import pandas as pd
-from pandasql import sqldf
 
 postgres_host = os.environ.get('postgres_host')
 postgres_database = os.environ.get('postgres_database')
@@ -70,18 +69,15 @@ def create_creditscore_df(df):
 
 
 def create_exited_age_correlation(df):
-    df_exited_age_correlation = sqldf('''
-    SELECT
-            geography,
-            gender,
-            exited,
-            AVG(age) AS avg_age,
-            ROUND(AVG(estimatedsalary),1) AS avg_salary,
-            COUNT(*) as number_of_exited_or_not
-    FROM df
-    GROUP BY geography, gender, exited
-    ORDER BY COUNT(*)
-    ''')
+    df_exited_age_correlation = df.groupby(['geography', 'gender', 'exited']).agg({
+    'age': 'mean',
+    'estimatedsalary': 'mean',
+    'exited': 'count'
+    }).rename(columns={
+        'age': 'avg_age',
+        'estimatedsalary': 'avg_salary',
+        'exited': 'number_of_exited_or_not'
+    }).reset_index().sort_values('number_of_exited_or_not')
 
     return df_exited_age_correlation
 
@@ -94,16 +90,11 @@ def create_exited_salary_correlation(df):
 
     df['is_greater'] = df['estimatedsalary'].apply(lambda x: 1 if x>min_salary else 0)
 
-    df_exited_salary_correlation = sqldf('''
-    SELECT
-            exited,
-            is_greater,
-            CASE
-            WHEN exited=is_greater THEN 1
-            ELSE 0
-            END AS correlation
-    FROM df
-    ''')
+    df_exited_salary_correlation = pd.DataFrame({
+    'exited': df['exited'],
+    'is_greater': df['estimatedsalary'] > df['estimatedsalary'].min(),
+    'correlation': np.where(df['exited'] == (df['estimatedsalary'] > df['estimatedsalary'].min()), 1, 0)
+    })
 
     return df_exited_salary_correlation
 

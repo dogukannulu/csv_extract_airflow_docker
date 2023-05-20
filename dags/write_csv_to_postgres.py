@@ -42,8 +42,8 @@ def download_file_from_url(url: str, dest_folder: str):
     """
     Download a file from a specific URL and download to the local direcory
     """
-    if not os.path.exists(dest_folder):
-        os.makedirs(dest_folder)  # create folder if it does not exist
+    if not os.path.exists(str(dest_folder)):
+        os.makedirs(str(dest_folder))  # create folder if it does not exist
 
     try:
         urllib.request.urlretrieve(url, destination_path)
