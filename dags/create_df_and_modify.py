@@ -7,7 +7,6 @@ import psycopg2
 import traceback
 import numpy as np
 import pandas as pd
-from pathlib import Path
 from pandasql import sqldf
 
 postgres_host = os.environ.get('postgres_host')
