@@ -2,7 +2,6 @@ import os
 import logging
 import psycopg2
 import traceback
-import pandas as pd
 from create_df_and_modify import create_base_df, create_creditscore_df, create_exited_age_correlation, create_exited_salary_correlation
 
 postgres_host = os.environ.get('postgres_host')

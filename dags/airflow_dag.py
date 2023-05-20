@@ -2,7 +2,6 @@ import os
 import sys
 from airflow import DAG
 from datetime import datetime, timedelta
-from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
 parent_folder = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
