@@ -3,7 +3,9 @@ pandas==1.4.2
 logging==0.4.9.6
 apache-airflow==2.6.1
 datetime==5.1
-pathlib==1.0.1
 requests==2.27.1
 numpy==1.21.5
 pandasql==0.7.3
+urllib3==1.26.9
+traceback2==1.4.0
+apache-airflow==2.6.1
