@@ -13,8 +13,8 @@ from pandasql import sqldf
 postgres_host = os.environ.get('postgres_host')
 postgres_database = os.environ.get('postgres_database')
 postgres_user = os.environ.get('postgres_user')
-postgres_password = int(os.environ.get('postgres_password'))
-postgres_port = int(os.environ.get('postgres_port'))
+postgres_password = os.environ.get('postgres_password')
+postgres_port = os.environ.get('postgres_port')
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s:%(funcName)s:%(levelname)s:%(message)s')

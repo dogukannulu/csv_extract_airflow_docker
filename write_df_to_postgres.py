@@ -8,8 +8,8 @@ from create_df_and_modify import create_base_df, create_creditscore_df, create_e
 postgres_host = os.environ.get('postgres_host')
 postgres_database = os.environ.get('postgres_database')
 postgres_user = os.environ.get('postgres_user')
-postgres_password = int(os.environ.get('postgres_password'))
-postgres_port = int(os.environ.get('postgres_port'))
+postgres_password = os.environ.get('postgres_password')
+postgres_port = os.environ.get('postgres_port')
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s:%(funcName)s:%(levelname)s:%(message)s')
@@ -71,6 +71,22 @@ def insert_exited_salary_correlation_table(df_exited_salary_correlation):
         row_count += 1
 
     logging.info(f"{row_count} rows inserted into table churn_modelling_exited_salary_correlation")
+
+
+def write_df_to_postgres_main():
+    main_df = create_base_df(cur)
+    df_creditscore = create_creditscore_df(main_df)
+    df_exited_age_correlation = create_exited_age_correlation(main_df)
+    df_exited_salary_correlation = create_exited_salary_correlation(main_df)
+
+    create_new_tables_in_postgres()
+    insert_creditscore_table(df_creditscore)
+    insert_exited_age_correlation_table(df_exited_age_correlation)
+    insert_exited_salary_correlation_table(df_exited_salary_correlation)
+
+    conn.commit()
+    cur.close()
+    conn.close()
 
 
 if __name__ == '__main__':

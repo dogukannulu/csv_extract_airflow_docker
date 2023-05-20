@@ -3,7 +3,6 @@ Downloads the csv file from the URL. Creates a new table in the Postgres server.
 Reads the file as a dataframe and inserts each record to the Postgres table. 
 """
 import psycopg2
-import csv
 import os
 import traceback
 import logging
@@ -17,8 +16,8 @@ logging.basicConfig(level=logging.INFO,
 postgres_host = os.environ.get('postgres_host')
 postgres_database = os.environ.get('postgres_database')
 postgres_user = os.environ.get('postgres_user')
-postgres_password = int(os.environ.get('postgres_password'))
-postgres_port = int(os.environ.get('postgres_port'))
+postgres_password = os.environ.get('postgres_password')
+postgres_port = os.environ.get('postgres_port')
 dest_folder = os.environ.get('dest_folder')
 
 url = "https://raw.githubusercontent.com/dogukannulu/datasets/master/Churn_Modelling.csv"
@@ -32,12 +31,12 @@ try:
         password=postgres_password,
         port=postgres_port
     )
+    cur = conn.cursor()
     logging.info('Postgres server connection is successful')
 except Exception as e:
     traceback.print_exc()
     logging.error("Couldn't create the Postgres connection")
 
-cur = conn.cursor()
 
 def download_file_from_url(url: str, dest_folder: str):
     """
@@ -87,6 +86,15 @@ def write_to_postgres():
             (int(row[0]), int(row[1]), str(row[2]), int(row[3]), str(row[4]), str(row[5]), int(row[6]), int(row[7]), float(row[8]), int(row[9]), int(row[10]), int(row[11]), float(row[12]), int(row[13])))
 
     logging.info(f' {inserted_row_count} rows from csv file inserted into churn_modelling table successfully')
+
+def write_csv_to_postgres_main():
+    download_file_from_url(url, dest_folder)
+    create_postgres_table()
+    write_to_postgres()
+    conn.commit()
+    cur.close()
+    conn.close()
+
 
 if __name__ == '__main__':
     download_file_from_url(url, dest_folder)
