@@ -29,13 +29,22 @@ After cloning the repo, run the following command only once:
 docker build --rm --build-arg AIRFLOW_DEPS="datadog,dask" --build-arg PYTHON_DEPS="flask_oauthlib>=0.9" -t puckel/docker-airflow .
 ```
 
-Then change the docker-compose-LocalExecutor.yml file with the one in this repo and add requirements.txt file in the folder. This will bind the Airflow container with Kafka container and necessary modules will automatically be installed:
+Then run the following command:
 
 ```bash
 docker-compose -f docker-compose-LocalExecutor.yml up -d
 ```
 
-Now you have a running Airflow container and you can reach out to that on `https://localhost:8080`
+Now you have a running Airflow container and you can reach out to that on `https://localhost:8080`. If there is `No module: ...` error, you can access to bash with the following command:
+
+```bash
+docker exec -it <container_id> /bin/bash 
+```
+
+Then:
+```bash
+pip install <necessary libraries>
+```
 
 ## PostgreSQL
 
