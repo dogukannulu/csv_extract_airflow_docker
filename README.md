@@ -46,6 +46,8 @@ Then:
 pip install <necessary libraries>
 ```
 
+After all these, we can move all .py files under dags folder in docker-airflow repo.
+
 ## PostgreSQL
 
 I am using a local Postgres Server and installed `PgAdmin` to control the tables instead of using `psql`. I defined the necessary info to access to Postgres server in .zshrc (if MacOS).
