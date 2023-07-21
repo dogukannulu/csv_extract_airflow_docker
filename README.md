@@ -1,5 +1,7 @@
 ## Information
 
+![image](https://github.com/dogukannulu/csv_extract_airflow_docker/assets/91257958/d0c01724-d2c6-4646-8f22-dac0ea3b5931)
+
 
 ```bash
 pip install -r requirements.txt
